@@ -1,7 +1,7 @@
 plugins {
     application
-    kotlin("jvm") version "1.5.21"
-    id("org.openjfx.javafxplugin") version "0.0.10"
+    kotlin("jvm") version Versions.kotlin
+    id("org.openjfx.javafxplugin") version Versions.openJfx
 }
 
 group = "hu.zsoki.ts"
@@ -19,6 +19,7 @@ dependencies {
         exclude("org.openjfx")
     }
     implementation(project(":ts-crawler"))
+    implementation("com.uchuhimo:konf:${Versions.konf}")
 
     testImplementation(kotlin("test"))
 }
@@ -38,7 +39,6 @@ tasks {
     compileKotlin {
         kotlinOptions {
             jvmTarget = "11"
-//            apiVersion = "1.1"
         }
     }
 }

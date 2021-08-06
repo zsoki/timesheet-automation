@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.5.21"
+    kotlin("jvm") version Versions.kotlin
 }
 
 group = "hu.zsoki.ts"
@@ -11,7 +11,8 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    implementation("org.seleniumhq.selenium:selenium-java:4.0.0-beta-4")
+    implementation("org.seleniumhq.selenium:selenium-java:${Versions.selenium}")
+    implementation("com.uchuhimo:konf:${Versions.konf}")
 }
 
 tasks.test {

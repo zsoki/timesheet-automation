@@ -1,5 +1,6 @@
 package hu.zsoki.ts.ui.welcome
 
+import javafx.beans.binding.Bindings
 import javafx.scene.layout.Priority
 import javafx.stage.FileChooser
 import tornadofx.*
@@ -13,7 +14,9 @@ class WelcomeView : View("Timesheet Automation") {
 
         label("Path to IEDriverServer.exe")
         hbox(10) {
-            textfield(controller.ieDriverPathProperty) { hboxConstraints { hGrow = Priority.ALWAYS } }
+            textfield(controller.ieDriverPathProperty) {
+                hboxConstraints { hGrow = Priority.ALWAYS }
+            }
             button("Browse") {
                 action {
                     val files = chooseFile("Select IEDriverServer.exe", arrayOf(FileChooser.ExtensionFilter("Executable", "*.exe")))
@@ -31,6 +34,10 @@ class WelcomeView : View("Timesheet Automation") {
         }
 
         button("Launch") {
+            disableProperty().bind(
+                Bindings.isEmpty(controller.ieDriverPathProperty)
+                    .or(Bindings.isEmpty(controller.timesheetUrlProperty))
+            )
             action {
                 runAsync {
                     controller.onLaunch()
