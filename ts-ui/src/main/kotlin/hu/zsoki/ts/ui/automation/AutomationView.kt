@@ -1,13 +1,13 @@
-package hu.zsoki.ts.ui.welcome
+package hu.zsoki.ts.ui.automation
 
 import javafx.beans.binding.Bindings
 import javafx.scene.layout.Priority
 import javafx.stage.FileChooser
 import tornadofx.*
 
-class WelcomeView : View("Timesheet Automation") {
+class AutomationView : View("Automation") {
 
-    val controller: WelcomeController by inject()
+    private val controller: AutomationController by inject()
 
     override val root = vbox(10) {
         paddingAll = 20

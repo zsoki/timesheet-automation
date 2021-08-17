@@ -1,4 +1,4 @@
-package hu.zsoki.ts.ui.welcome
+package hu.zsoki.ts.ui.automation
 
 import hu.zsoki.ts.config.TsAppConfigSpec
 import hu.zsoki.ts.config.overWriteConfig
@@ -7,7 +7,7 @@ import hu.zsoki.ts.crawler.Crawler
 import javafx.beans.property.SimpleStringProperty
 import tornadofx.*
 
-class WelcomeController : Controller() {
+class AutomationController : Controller() {
 
     val ieDriverPathProperty = SimpleStringProperty(tsAppConfig[TsAppConfigSpec.ieDriverPath])
     val timesheetUrlProperty = SimpleStringProperty(tsAppConfig[TsAppConfigSpec.timesheetUrl])
