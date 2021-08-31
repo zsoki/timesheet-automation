@@ -18,7 +18,7 @@ dependencies {
         exclude("org.jetbrains.kotlin")
         exclude("org.openjfx")
     }
-    implementation(project(":ts-crawler"))
+    implementation(project(":ts-core"))
     implementation("com.uchuhimo:konf:${Versions.konf}")
 
     testImplementation(kotlin("test"))

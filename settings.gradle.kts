@@ -1,5 +1,5 @@
 
 rootProject.name = "timesheet-automation"
 
-include("ts-crawler")
+include("ts-core")
 include("ts-ui")
