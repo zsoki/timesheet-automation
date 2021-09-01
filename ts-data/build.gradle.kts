@@ -10,8 +10,10 @@ repositories {
 }
 
 dependencies {
-    implementation(Dependencies.seleniumJava)
-    implementation(Dependencies.konf)
+    implementation(Dependencies.sqlite)
+    implementation(Dependencies.exposedCore)
+    implementation(Dependencies.exposedJdbc)
+    implementation(Dependencies.exposedJavaTime)
 }
 
 tasks.test {

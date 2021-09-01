@@ -1,7 +1,7 @@
 plugins {
     application
     kotlin("jvm") version Versions.kotlin
-    id("org.openjfx.javafxplugin") version Versions.openJfx
+    id(Dependencies.javaFxPlugin) version Versions.openJfx
 }
 
 group = "hu.zsoki.ts"
@@ -13,13 +13,13 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
-    implementation("com.github.edvin:tornadofx2:master") {
+    implementation(project(":ts-core"))
+
+    implementation(Dependencies.tornadoFx2) {
         exclude("org.jetbrains.kotlin")
         exclude("org.openjfx")
     }
-    implementation(project(":ts-core"))
-    implementation("com.uchuhimo:konf:${Versions.konf}")
+    implementation(Dependencies.konf)
 
     testImplementation(kotlin("test"))
 }
