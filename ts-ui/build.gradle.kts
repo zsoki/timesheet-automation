@@ -19,7 +19,6 @@ dependencies {
         exclude("org.jetbrains.kotlin")
         exclude("org.openjfx")
     }
-    implementation(Dependencies.konf)
 
     testImplementation(kotlin("test"))
 }
