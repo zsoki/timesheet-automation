@@ -10,9 +10,12 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":ts-config"))
+
     implementation(Dependencies.sqlite)
     implementation(Dependencies.exposedCore)
     implementation(Dependencies.exposedJdbc)
+    implementation(Dependencies.exposedDao)
     implementation(Dependencies.exposedJavaTime)
 }
 

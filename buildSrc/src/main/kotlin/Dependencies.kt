@@ -7,7 +7,7 @@ object Versions {
 
     val selenium = "4.0.0-beta-4"
     val sqlite = "3.36.0.3"
-    val exposed = "0.33.1"
+    val exposed = "0.34.1"
 }
 
 object Dependencies {
@@ -18,6 +18,7 @@ object Dependencies {
     val seleniumJava = "org.seleniumhq.selenium:selenium-java:${Versions.selenium}"
     val sqlite = "org.xerial:sqlite-jdbc:${Versions.sqlite}"
     val exposedCore = "org.jetbrains.exposed:exposed-core:${Versions.exposed}"
+    val exposedDao = "org.jetbrains.exposed:exposed-dao:${Versions.exposed}"
     val exposedJdbc = "org.jetbrains.exposed:exposed-jdbc:${Versions.exposed}"
     val exposedJavaTime = "org.jetbrains.exposed:exposed-java-time:${Versions.exposed}"
 }

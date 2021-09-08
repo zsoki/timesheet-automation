@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
     implementation(project(":ts-core"))
+    implementation(project(":ts-config"))
 
     implementation(Dependencies.tornadoFx2) {
         exclude("org.jetbrains.kotlin")

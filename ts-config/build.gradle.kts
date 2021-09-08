@@ -10,9 +10,6 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":ts-data"))
-
-    implementation(Dependencies.seleniumJava)
     implementation(Dependencies.konf)
 }
 
