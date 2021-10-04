@@ -7,15 +7,17 @@ import tornadofx.*
 import java.time.LocalTime
 
 class TimesheetView : View("Timesheet") {
+    private val controller: TimesheetController by inject()
+
     override val root = vbox(10) {
         paddingAll = 20
 
         // Test data
-        val texasCities = FXCollections.observableArrayList("Austin", "Dallas", "Midland", "San Antonio", "Fort Worth")
+        val testData = FXCollections.observableArrayList("Item 1", "Item 2", "Item 3")
         val records = listOf(
-            TimesheetRecordVO("Rezsi", "Belso megbeszelesek", "Nautilus daily standup", LocalTime.of(9, 0), LocalTime.of(0, 30)),
-            TimesheetRecordVO("Fraud", "Central printing", "OTPFI-569", LocalTime.of(10, 0), LocalTime.of(6, 0)),
-            TimesheetRecordVO("CSX", "Fejlesztes", "IO-manager", LocalTime.of(16, 0), LocalTime.of(1, 0))
+            TimesheetRecordVO("Project 1", "Task 1", "Bugfixing", LocalTime.of(9, 0), LocalTime.of(0, 30)),
+            TimesheetRecordVO("Project 2", "Task 2", "Support", LocalTime.of(10, 0), LocalTime.of(6, 0)),
+            TimesheetRecordVO("Onboarding", "Environment setup", "Docker setup", LocalTime.of(16, 0), LocalTime.of(1, 0))
         ).asObservable()
         // Test data end
 
@@ -34,21 +36,21 @@ class TimesheetView : View("Timesheet") {
                 label("Note")
             }
             row {
-                combobox(values = texasCities) {
+                combobox(controller.selectedProjectProperty, controller.projects) {
                     useMaxWidth = true
                     gridpaneConstraints {
                         marginRight = 10.0
                         hGrow = Priority.ALWAYS
                     }
                 }
-                combobox(values = texasCities) {
+                combobox(controller.selectedTaskProperty, controller.tasks) {
                     useMaxWidth = true
                     gridpaneConstraints {
                         marginRight = 10.0
                         hGrow = Priority.ALWAYS
                     }
                 }
-                combobox(values = texasCities) {
+                combobox(controller.selectedNoteProperty, controller.notes) {
                     isEditable = true
                     useMaxWidth = true
                     gridpaneConstraints {
@@ -63,7 +65,7 @@ class TimesheetView : View("Timesheet") {
             vboxConstraints { marginTop = 20.0 }
             column("Project", TimesheetRecordVO::projectProperty).makeEditable().apply {
                 setCellValueFactory { it.value.projectProperty }
-                setCellFactory(ComboBoxTableCell.forTableColumn(texasCities))
+                setCellFactory(ComboBoxTableCell.forTableColumn(testData))
             }
             column("Task", TimesheetRecordVO::taskProperty).makeEditable()
             column("Note", TimesheetRecordVO::noteProperty).makeEditable()
@@ -71,5 +73,10 @@ class TimesheetView : View("Timesheet") {
             readonlyColumn("To", TimesheetRecordVO::to)
             readonlyColumn("Duration", TimesheetRecordVO::duration)
         }
+    }
+
+    override fun onDock() {
+        super.onDock()
+        controller.loadProjects()
     }
 }
