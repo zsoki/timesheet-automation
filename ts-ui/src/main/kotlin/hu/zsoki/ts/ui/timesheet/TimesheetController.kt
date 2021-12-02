@@ -1,6 +1,6 @@
 package hu.zsoki.ts.ui.timesheet
 
-import hu.zsoki.ts.TimesheetModel
+import hu.zsoki.ts.model.TimesheetModel
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import tornadofx.*
