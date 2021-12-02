@@ -10,10 +10,20 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":ts-data"))
+    implementation(project(":ts-config"))
 
+    // Crawler
     implementation(Dependencies.seleniumJava)
+
+    // Config
     implementation(Dependencies.konf)
+
+    // Data
+    implementation(Dependencies.sqlite)
+    implementation(Dependencies.exposedCore)
+    implementation(Dependencies.exposedJdbc)
+    implementation(Dependencies.exposedDao)
+    implementation(Dependencies.exposedJavaTime)
 }
 
 tasks.test {

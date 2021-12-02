@@ -1,33 +1,32 @@
 package hu.zsoki.ts
 
-import hu.zsoki.ts.domain.Note
-import hu.zsoki.ts.domain.Project
-import hu.zsoki.ts.domain.Task
+import hu.zsoki.ts.data.*
+import hu.zsoki.ts.data.ProjectsTable
+import hu.zsoki.ts.data.TasksTable
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class TimesheetModel {
 
-    fun getProjects(): List<Project> {
-        // TODO get from DB
-        return listOf(Project("Projekt 1"), Project("Projekt 2"), Project("Onboarding"))
+    fun getProjects(): List<String> {
+        return transaction { ProjectEntity.all().map(ProjectEntity::projectName).toList() }
     }
 
-    fun getTasks(projectName: String): List<Task> {
-        //TODO get from DB
-        return when (projectName) {
-            "Projekt 1" -> listOf(Task("Task 1"), Task("Task 2"))
-            "Projekt 2" -> listOf(Task("Task 3"), Task("Task 4"), Task("Task 5"))
-            "Onboarding" -> listOf(Task("Documentation"), Task("Environment setup"), Task("Training"))
-            else -> throw error("Unknown project!")
+    fun getTasks(projectName: String): List<String> {
+        return transaction {
+            (ProjectsTable innerJoin TasksTable)
+                .slice(ProjectsTable.projectName, TasksTable.taskName)
+                .select { ProjectsTable.projectName eq projectName }
+                .map { it[TasksTable.taskName] }
         }
     }
 
-    fun getNotes(taskName: String): List<Note> {
-        // TODO get from DB
-        return when (taskName) {
-            "Documentation" -> listOf(Note("Creating onboarding doc"), Note("Creating definition of done"))
-            "Environment setup" -> listOf(Note("Docker setup"), Note("IDE Setup"), Note("Install scripts"))
-            "Training" -> listOf(Note("Spring in action"), Note("The Clean Coder"))
-            else -> listOf()
+    fun getNotes(taskName: String): List<String> {
+        return transaction {
+            (TasksTable innerJoin RecordsTable)
+                .slice(TasksTable.taskName, RecordsTable.note)
+                .select { TasksTable.taskName eq taskName }
+                .map { it[RecordsTable.note] }
         }
     }
 

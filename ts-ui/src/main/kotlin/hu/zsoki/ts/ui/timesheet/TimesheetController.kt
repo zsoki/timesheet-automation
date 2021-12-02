@@ -1,9 +1,6 @@
 package hu.zsoki.ts.ui.timesheet
 
 import hu.zsoki.ts.TimesheetModel
-import hu.zsoki.ts.domain.Note
-import hu.zsoki.ts.domain.Project
-import hu.zsoki.ts.domain.Task
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import tornadofx.*
@@ -24,7 +21,7 @@ class TimesheetController : Controller() {
     fun loadProjects() {
         projects.clear()
         // TODO async
-        projects.addAll(model.getProjects().map(Project::name))
+        projects.addAll(model.getProjects())
         if (projects.isNotEmpty()) selectedProjectProperty.set(projects[0])
     }
 
@@ -32,7 +29,7 @@ class TimesheetController : Controller() {
         tasks.clear()
         if (!selectedProject.isNullOrBlank()) {
             // TODO async
-            tasks.addAll(model.getTasks(selectedProject).map(Task::name))
+            tasks.addAll(model.getTasks(selectedProject))
             if (tasks.isNotEmpty()) selectedTaskProperty.set(tasks[0])
         }
     }
@@ -41,7 +38,7 @@ class TimesheetController : Controller() {
         notes.clear()
         if (!selectedTask.isNullOrBlank()) {
             // TODO async
-            notes.addAll(model.getNotes(selectedTask).map(Note::content))
+            notes.addAll(model.getNotes(selectedTask))
             if (notes.isNotEmpty()) selectedNoteProperty.set(notes[0])
         }
     }
