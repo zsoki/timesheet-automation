@@ -1,10 +1,10 @@
 package hu.zsoki.ts.ui.timesheet
 
 import javafx.collections.FXCollections
+import javafx.geometry.Insets
 import javafx.scene.control.cell.ComboBoxTableCell
 import javafx.scene.layout.Priority
 import tornadofx.*
-import java.time.LocalTime
 
 class TimesheetView : View("Timesheet") {
     private val controller: TimesheetController by inject()
@@ -14,18 +14,16 @@ class TimesheetView : View("Timesheet") {
 
         // Test data
         val testData = FXCollections.observableArrayList("Item 1", "Item 2", "Item 3")
-        val records = listOf(
-            TimesheetRecordVO("Project 1", "Task 1", "Bugfixing", LocalTime.of(9, 0), LocalTime.of(0, 30)),
-            TimesheetRecordVO("Project 2", "Task 2", "Support", LocalTime.of(10, 0), LocalTime.of(6, 0)),
-            TimesheetRecordVO("Onboarding", "Environment setup", "Docker setup", LocalTime.of(16, 0), LocalTime.of(1, 0))
-        ).asObservable()
         // Test data end
 
         label("History quick fill")
         hbox(10) {
-            textfield { hboxConstraints { hGrow = Priority.ALWAYS } }
+            textfield(controller.quickFillProperty) { hboxConstraints { hGrow = Priority.ALWAYS } }
             button("Fill") {
                 minWidth = 80.0
+                action {
+                    controller.fill()
+                }
             }
         }
 
@@ -39,14 +37,14 @@ class TimesheetView : View("Timesheet") {
                 combobox(controller.selectedProjectProperty, controller.projects) {
                     useMaxWidth = true
                     gridpaneConstraints {
-                        marginRight = 10.0
+                        margin = Insets(0.0, 10.0, 10.0, 0.0)
                         hGrow = Priority.ALWAYS
                     }
                 }
                 combobox(controller.selectedTaskProperty, controller.tasks) {
                     useMaxWidth = true
                     gridpaneConstraints {
-                        marginRight = 10.0
+                        margin = Insets(0.0, 10.0, 10.0, 0.0)
                         hGrow = Priority.ALWAYS
                     }
                 }
@@ -54,14 +52,44 @@ class TimesheetView : View("Timesheet") {
                     isEditable = true
                     useMaxWidth = true
                     gridpaneConstraints {
-                        marginRight = 10.0
+                        columnSpan = 2
+                        margin = Insets(0.0, 10.0, 10.0, 0.0)
                         hGrow = Priority.ALWAYS
                     }
                 }
             }
+            row {
+                label("Duration")
+                label("From")
+                label("To")
+            }
+            row {
+                textfield(controller.durationProperty) {
+                    gridpaneConstraints {
+                        margin = Insets(0.0, 10.0, 10.0, 0.0)
+                    }
+                }
+                textfield(controller.fromProperty) {
+                    gridpaneConstraints {
+                        margin = Insets(0.0, 10.0, 10.0, 0.0)
+                    }
+                }
+                textfield(controller.toProperty) {
+                    gridpaneConstraints {
+                        margin = Insets(0.0, 10.0, 10.0, 0.0)
+                    }
+                }
+                button("Commit") {
+                    minWidth = 80.0
+                    gridpaneConstraints {
+                        margin = Insets(0.0, 10.0, 10.0, 0.0)
+                    }
+                    action { controller.commit() }
+                }
+            }
         }
 
-        tableview(records) {
+        tableview(controller.loggedHourRecords) {
             vboxConstraints { marginTop = 20.0 }
             column("Project", TimesheetRecordVO::projectProperty).makeEditable().apply {
                 setCellValueFactory { it.value.projectProperty }
@@ -78,5 +106,6 @@ class TimesheetView : View("Timesheet") {
     override fun onDock() {
         super.onDock()
         controller.loadProjects()
+        controller.initLoggedHourRecords()
     }
 }
