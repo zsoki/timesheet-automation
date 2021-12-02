@@ -2,9 +2,14 @@ package hu.zsoki.ts.ui.timesheet
 
 import javafx.collections.FXCollections
 import javafx.geometry.Insets
+import javafx.scene.control.TableCell
 import javafx.scene.control.cell.ComboBoxTableCell
 import javafx.scene.layout.Priority
 import tornadofx.*
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 class TimesheetView : View("Timesheet") {
     private val controller: TimesheetController by inject()
@@ -89,23 +94,62 @@ class TimesheetView : View("Timesheet") {
             }
         }
 
-        tableview(controller.loggedHourRecords) {
+        vbox {
             vboxConstraints { marginTop = 20.0 }
-            column("Project", TimesheetRecordVO::projectProperty).makeEditable().apply {
-                setCellValueFactory { it.value.projectProperty }
-                setCellFactory(ComboBoxTableCell.forTableColumn(testData))
+            hbox {
+                label("Select date to log hours:") {
+                    paddingRight = 10
+                }
+                datepicker(controller.selectedDateProperty)
             }
-            column("Task", TimesheetRecordVO::taskProperty).makeEditable()
-            column("Note", TimesheetRecordVO::noteProperty).makeEditable()
-            readonlyColumn("From", TimesheetRecordVO::from)
-            readonlyColumn("To", TimesheetRecordVO::to)
-            readonlyColumn("Duration", TimesheetRecordVO::duration)
+            tableview(controller.loggedHourRecords) {
+                vboxConstraints { marginTop = 10.0 }
+                column("Project", TimesheetRecordVO::projectProperty).makeEditable().apply {
+                    setCellValueFactory { it.value.projectProperty }
+                    setCellFactory(ComboBoxTableCell.forTableColumn(testData))
+                }
+                column("Task", TimesheetRecordVO::taskProperty).makeEditable()
+                column("Note", TimesheetRecordVO::noteProperty).makeEditable()
+                readonlyColumn("From", TimesheetRecordVO::from).apply {
+                    setCellValueFactory { it.value.fromProperty }
+                    setCellFactory {
+                        object : TableCell<TimesheetRecordVO, LocalDateTime>() {
+                            override fun updateItem(item: LocalDateTime?, empty: Boolean) {
+                                super.updateItem(item, empty)
+                                text = if (empty) null else item?.format(DateTimeFormatter.ofPattern("H:mm"))
+                            }
+                        }
+                    }
+                }
+                readonlyColumn("To", TimesheetRecordVO::to).apply {
+                    setCellValueFactory { it.value.toProperty }
+                    setCellFactory {
+                        object : TableCell<TimesheetRecordVO, LocalDateTime>() {
+                            override fun updateItem(item: LocalDateTime?, empty: Boolean) {
+                                super.updateItem(item, empty)
+                                text = if (empty) null else item?.format(DateTimeFormatter.ofPattern("H:mm"))
+                            }
+                        }
+                    }
+                }
+                readonlyColumn("Duration", TimesheetRecordVO::duration).apply {
+                    setCellValueFactory { it.value.durationProperty }
+                    setCellFactory {
+                        object : TableCell<TimesheetRecordVO, LocalTime>() {
+                            override fun updateItem(item: LocalTime?, empty: Boolean) {
+                                super.updateItem(item, empty)
+                                text = if (empty) null else item?.format(DateTimeFormatter.ofPattern("H:mm"))
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
     override fun onDock() {
         super.onDock()
         controller.loadProjects()
-        controller.initLoggedHourRecords()
+        controller.selectedDateProperty.set(LocalDate.now())
     }
 }

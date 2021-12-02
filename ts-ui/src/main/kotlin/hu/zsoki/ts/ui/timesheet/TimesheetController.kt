@@ -1,10 +1,11 @@
 package hu.zsoki.ts.ui.timesheet
 
 import hu.zsoki.ts.model.TimesheetModel
+import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import tornadofx.*
-import java.time.LocalTime
+import java.time.LocalDate
 
 class TimesheetController : Controller() {
 
@@ -25,6 +26,7 @@ class TimesheetController : Controller() {
     val fromProperty = SimpleStringProperty()
     val toProperty = SimpleStringProperty()
 
+    val selectedDateProperty = SimpleObjectProperty<LocalDate>().apply { onChange { selectedDate -> loadLoggedHours(selectedDate) } }
     val loggedHourRecords = FXCollections.observableArrayList<TimesheetRecordVO>()
 
     fun loadProjects() {
@@ -52,13 +54,11 @@ class TimesheetController : Controller() {
         }
     }
 
-    fun initLoggedHourRecords() {
+    private fun loadLoggedHours(selectedDate: LocalDate?) {
         loggedHourRecords.clear()
-        loggedHourRecords.addAll(
-            TimesheetRecordVO("Project 1", "Task 1", "Bugfixing", LocalTime.of(9, 0), LocalTime.of(0, 30)),
-            TimesheetRecordVO("Project 2", "Task 2", "Support", LocalTime.of(10, 0), LocalTime.of(6, 0)),
-            TimesheetRecordVO("Onboarding", "Environment setup", "Docker setup", LocalTime.of(16, 0), LocalTime.of(1, 0))
-        )
+        if (selectedDate != null) {
+            loggedHourRecords.addAll(model.getLoggedHoursOrEmpty(selectedDate).map(TimesheetRecordVO::fromDomain))
+        }
     }
 
     fun fill() {
