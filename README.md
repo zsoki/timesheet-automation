@@ -1,7 +1,6 @@
-# Timesheet Automation
+# Timesheet 2
 
-Timesheet Automation is a desktop app for filling out work ours in a convenient GUI and recording them in the old inconvenient IE-supported Microsoft Sharepoint 2010 EP site "Timesheet" monstrosity.
-
+Timesheet 2 is a desktop app for filling out work ours in a convenient GUI then automating recording them in an old inconvenient Microsoft Sharepoint 2010 EP site "Timesheet" monstrosity.
 
 ## Concept art
 
