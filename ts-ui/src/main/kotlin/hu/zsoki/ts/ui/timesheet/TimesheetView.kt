@@ -7,7 +7,6 @@ import javafx.scene.control.cell.ComboBoxTableCell
 import javafx.scene.layout.Priority
 import tornadofx.*
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -112,25 +111,11 @@ class TimesheetView : View("Timesheet") {
                 column("Note", TimesheetRecordVO::noteProperty).makeEditable()
                 readonlyColumn("From", TimesheetRecordVO::from).apply {
                     setCellValueFactory { it.value.fromProperty }
-                    setCellFactory {
-                        object : TableCell<TimesheetRecordVO, LocalDateTime>() {
-                            override fun updateItem(item: LocalDateTime?, empty: Boolean) {
-                                super.updateItem(item, empty)
-                                text = if (empty) null else item?.format(DateTimeFormatter.ofPattern("H:mm"))
-                            }
-                        }
-                    }
+                    setCellFactory { TimesheetRecordFormattedDateTimeCell() }
                 }
                 readonlyColumn("To", TimesheetRecordVO::to).apply {
                     setCellValueFactory { it.value.toProperty }
-                    setCellFactory {
-                        object : TableCell<TimesheetRecordVO, LocalDateTime>() {
-                            override fun updateItem(item: LocalDateTime?, empty: Boolean) {
-                                super.updateItem(item, empty)
-                                text = if (empty) null else item?.format(DateTimeFormatter.ofPattern("H:mm"))
-                            }
-                        }
-                    }
+                    setCellFactory { TimesheetRecordFormattedDateTimeCell() }
                 }
                 readonlyColumn("Duration", TimesheetRecordVO::duration).apply {
                     setCellValueFactory { it.value.durationProperty }

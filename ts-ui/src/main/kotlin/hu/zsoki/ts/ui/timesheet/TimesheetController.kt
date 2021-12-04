@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import tornadofx.*
 import java.time.LocalDate
+import java.time.LocalTime
 
 class TimesheetController : Controller() {
 
@@ -66,6 +67,17 @@ class TimesheetController : Controller() {
     }
 
     fun commit() {
-        TODO("Not yet implemented")
+        // TODO handle parse errors
+            val from = LocalTime.parse(fromProperty.get())
+        val to = LocalTime.parse(toProperty.get())
+        val timeSheetRecord = model.saveLoggedHour(
+            selectedProjectProperty.get(),
+            selectedTaskProperty.get(),
+            selectedNoteProperty.get(),
+            selectedDateProperty.get(),
+            from,
+            to
+        ).let(TimesheetRecordVO::fromDomain)
+        loggedHourRecords.add(timeSheetRecord)
     }
 }
