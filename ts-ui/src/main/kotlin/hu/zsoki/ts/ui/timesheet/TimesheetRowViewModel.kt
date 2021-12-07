@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
 
-class TimesheetRecordVO(project: String, task: String, note: String, from: LocalDateTime, to: LocalDateTime) {
+class TimesheetRowViewModel(project: String, task: String, note: String, from: LocalDateTime, to: LocalDateTime) {
     val projectProperty = stringProperty(project)
     var project by projectProperty
 
@@ -27,8 +27,8 @@ class TimesheetRecordVO(project: String, task: String, note: String, from: Local
     val duration by durationProperty
 
     companion object {
-        fun fromDomain(domainObject: LoggedHour): TimesheetRecordVO {
-            return TimesheetRecordVO(domainObject.projectName, domainObject.taskName, domainObject.note, domainObject.from, domainObject.to)
+        fun fromDomain(domainObject: LoggedHour): TimesheetRowViewModel {
+            return TimesheetRowViewModel(domainObject.projectName, domainObject.taskName, domainObject.note, domainObject.from, domainObject.to)
         }
     }
 }

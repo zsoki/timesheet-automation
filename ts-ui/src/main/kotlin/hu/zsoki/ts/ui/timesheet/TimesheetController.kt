@@ -28,7 +28,7 @@ class TimesheetController : Controller() {
     val toProperty = SimpleStringProperty()
 
     val selectedDateProperty = SimpleObjectProperty<LocalDate>().apply { onChange { selectedDate -> loadLoggedHours(selectedDate) } }
-    val loggedHourRecords = FXCollections.observableArrayList<TimesheetRecordVO>()
+    val timesheetRows = FXCollections.observableArrayList<TimesheetRowViewModel>()
 
     fun loadProjects() {
         projects.clear()
@@ -56,9 +56,9 @@ class TimesheetController : Controller() {
     }
 
     private fun loadLoggedHours(selectedDate: LocalDate?) {
-        loggedHourRecords.clear()
+        timesheetRows.clear()
         if (selectedDate != null) {
-            loggedHourRecords.addAll(model.getLoggedHoursOrEmpty(selectedDate).map(TimesheetRecordVO::fromDomain))
+            timesheetRows.addAll(model.getLoggedHoursOrEmpty(selectedDate).map(TimesheetRowViewModel::fromDomain))
         }
     }
 
@@ -70,14 +70,14 @@ class TimesheetController : Controller() {
         // TODO handle parse errors
             val from = LocalTime.parse(fromProperty.get())
         val to = LocalTime.parse(toProperty.get())
-        val timeSheetRecord = model.saveLoggedHour(
+        val timesheetRow = model.saveLoggedHour(
             selectedProjectProperty.get(),
             selectedTaskProperty.get(),
             selectedNoteProperty.get(),
             selectedDateProperty.get(),
             from,
             to
-        ).let(TimesheetRecordVO::fromDomain)
-        loggedHourRecords.add(timeSheetRecord)
+        ).let(TimesheetRowViewModel::fromDomain)
+        timesheetRows.add(timesheetRow)
     }
 }

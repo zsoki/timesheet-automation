@@ -101,26 +101,26 @@ class TimesheetView : View("Timesheet") {
                 }
                 datepicker(controller.selectedDateProperty)
             }
-            tableview(controller.loggedHourRecords) {
+            tableview(controller.timesheetRows) {
                 vboxConstraints { marginTop = 10.0 }
-                column("Project", TimesheetRecordVO::projectProperty).makeEditable().apply {
+                column("Project", TimesheetRowViewModel::projectProperty).makeEditable().apply {
                     setCellValueFactory { it.value.projectProperty }
                     setCellFactory(ComboBoxTableCell.forTableColumn(testData))
                 }
-                column("Task", TimesheetRecordVO::taskProperty).makeEditable()
-                column("Note", TimesheetRecordVO::noteProperty).makeEditable()
-                readonlyColumn("From", TimesheetRecordVO::from).apply {
+                column("Task", TimesheetRowViewModel::taskProperty).makeEditable()
+                column("Note", TimesheetRowViewModel::noteProperty).makeEditable()
+                readonlyColumn("From", TimesheetRowViewModel::from).apply {
                     setCellValueFactory { it.value.fromProperty }
                     setCellFactory { TimesheetRecordFormattedDateTimeCell() }
                 }
-                readonlyColumn("To", TimesheetRecordVO::to).apply {
+                readonlyColumn("To", TimesheetRowViewModel::to).apply {
                     setCellValueFactory { it.value.toProperty }
                     setCellFactory { TimesheetRecordFormattedDateTimeCell() }
                 }
-                readonlyColumn("Duration", TimesheetRecordVO::duration).apply {
+                readonlyColumn("Duration", TimesheetRowViewModel::duration).apply {
                     setCellValueFactory { it.value.durationProperty }
                     setCellFactory {
-                        object : TableCell<TimesheetRecordVO, LocalTime>() {
+                        object : TableCell<TimesheetRowViewModel, LocalTime>() {
                             override fun updateItem(item: LocalTime?, empty: Boolean) {
                                 super.updateItem(item, empty)
                                 text = if (empty) null else item?.format(DateTimeFormatter.ofPattern("H:mm"))
