@@ -1,13 +1,13 @@
 object Versions {
-    val kotlin = "1.5.21"
+    val kotlin = "1.7.10"
 
-    val openJfx = "0.0.10"
+    val openJfx = "0.0.13"
     val tornadoFx2 = "master"
     val konf = "1.1.2"
 
-    val selenium = "4.0.0-beta-4"
+    val selenium = "4.3.0"
     val sqlite = "3.36.0.3"
-    val exposed = "0.34.1"
+    val exposed = "0.38.2"
 }
 
 object Dependencies {

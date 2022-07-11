@@ -68,7 +68,7 @@ class TimesheetController : Controller() {
 
     fun commit() {
         // TODO handle parse errors
-            val from = LocalTime.parse(fromProperty.get())
+        val from = LocalTime.parse(fromProperty.get())
         val to = LocalTime.parse(toProperty.get())
         val timesheetRow = model.saveLoggedHour(
             selectedProjectProperty.get(),
